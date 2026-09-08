@@ -1,0 +1,49 @@
+# ---- 비밀값 (절대 커밋 금지) ----
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# ---- Node / Expo ----
+node_modules/
+.expo/
+.expo-shared/
+dist/
+web-build/
+*.tsbuildinfo
+
+# ---- 네이티브 빌드 산출물 ----
+/ios
+/android
+*.jks
+*.p8
+*.p12
+*.mobileprovision
+*.orig.*
+
+# ---- Supabase 로컬 ----
+.supabase/
+supabase/.branches/
+supabase/.temp/
+
+# ---- 로그 / 캐시 ----
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+.cache/
+coverage/
+
+# ---- OS / 편집기 ----
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# ---- 참고 보관 자료 (프로젝트 소스 아님) ----
+# 저장된 웹페이지 안에 세션 accessToken(JWT)이 포함되어 있어 Git 추적에서 제외.
+# 파일은 로컬 docs/reference/ 에 그대로 보존됩니다.
+docs/reference/
