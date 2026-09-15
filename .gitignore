@@ -47,3 +47,8 @@ desktop.ini
 # 저장된 웹페이지 안에 세션 accessToken(JWT)이 포함되어 있어 Git 추적에서 제외.
 # 파일은 로컬 docs/reference/ 에 그대로 보존됩니다.
 docs/reference/
+
+# ---- Expo 생성 파일 ----
+expo-env.d.ts
+.metro-health-check*
+.kotlin/
