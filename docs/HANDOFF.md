@@ -84,7 +84,7 @@ alter table public.notes add column if not exists prayer_answer_status text;
 
 명세서 10장을 따른다. 요약하면:
 
-- **단계 2**: `classify-note` 연결, 수동 분류 우선, 할 일 기한·완료·챙김 탭,
+- **단계 2**: `classify-note` 연결 완료, 수동 분류 우선, 할 일 기한·완료·챙김 탭,
   기도 Yes/No/Wait, 감사 템플릿(`YYMMDD 감사` + 네 질문)과 감사 달력, 말씀 분류 규칙
 - **단계 3**: 검색, 알림, 오류·빈 상태 처리, 디자인 다듬기, Render 배포 마무리
 

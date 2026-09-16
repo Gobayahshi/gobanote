@@ -20,8 +20,9 @@ import { createNote } from '@/lib/notes';
  *
  * 최우선 원칙대로, 빈 칸이 먼저 나온다. 쓰기 전에 아무것도 고르지 않아도 된다.
  *
- * 단계 1 에서는 AI 분류를 아직 붙이지 않았다. 지금은 분류를 고르지 않으면
- * 일상으로 저장되고, 단계 2 에서 classify-note 가 이 자리를 채운다.
+ * 사용자가 분류를 고르지 않아도 일상으로 먼저 저장한 뒤, classify-note 가
+ * 노트 내용을 바탕으로 AI 분류를 갱신한다. 분류를 직접 고른 경우에도 저장은
+ * 성공하며, AI 분류 실패가 노트 저장을 막지 않는다.
  */
 export default function WriteScreen() {
   const router = useRouter();
