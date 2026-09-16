@@ -13,7 +13,7 @@
 |---|---|---|
 | 0 | 폴더 점검, Git 초기화, 기존 DB 읽기 전용 점검, 첫 커밋·push | **완료** |
 | 1 | Expo 앱 뼈대, 로그인, 하단 탭, 노트 CRUD | **코드 완료 · 실데이터 검증 대기** |
-| 2 | `classify-note` 분류, 분류별 기능(할 일·기도·감사·말씀) | 대기 |
+| 2 | `classify-note` 분류 연결, 분류별 기능(할 일·기도·감사·말씀) | 분류 연결 완료 · Edge Function 설정 확인 필요 |
 | 3 | 검색, 알림, 오류·빈 상태 처리, 디자인 다듬기, 웹 배포 | 대기 |
 | 4 | 사용자 확인 후 확장 | 대기 |
 
@@ -78,6 +78,10 @@ Windows 에서 `expo export` 가 출력 없이 `exit 107` 로 끝나면 빌드 �
 | 웹 배포 | `expo export --platform web` → Render **Static Site** |
 
 Gemini API 키는 Edge Function 의 서버 비밀값으로만 씁니다. 앱 번들에 넣지 않습니다.
+
+노트를 저장하면 앱이 로그인 사용자 세션으로 `classify-note`를 호출합니다. 실제 Gemini
+분류를 사용하려면 Supabase Edge Function에 `GEMINI_API_KEY`가 등록되어 있어야 합니다.
+이 키는 앱의 `.env`나 로그인 화면에 넣지 않습니다.
 
 ```bash
 supabase secrets set GEMINI_API_KEY=...

@@ -7,8 +7,19 @@
  */
 import type { Session } from '@supabase/supabase-js';
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { supabase } from './supabase';
+
+const REMEMBER_LOGIN_KEY = 'gobanote.remember-login';
+
+export async function setRememberLogin(value: boolean): Promise<void> {
+  await AsyncStorage.setItem(REMEMBER_LOGIN_KEY, value ? 'true' : 'false');
+}
+
+async function shouldRememberLogin(): Promise<boolean> {
+  return (await AsyncStorage.getItem(REMEMBER_LOGIN_KEY)) !== 'false';
+}
 
 type AuthValue = {
   session: Session | null;
@@ -29,8 +40,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let alive = true;
 
-    supabase.auth
-      .getSession()
+    shouldRememberLogin()
+      .then(async (rememberLogin) => {
+        if (!rememberLogin) {
+          await supabase.auth.signOut();
+          return { data: { session: null } };
+        }
+        return supabase.auth.getSession();
+      })
       .then(({ data }) => {
         if (!alive) return;
         setSession(data.session);

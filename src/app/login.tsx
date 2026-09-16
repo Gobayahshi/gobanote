@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button, ErrorNotice } from '@/components/ui';
 import { colors, fontSize, radius, spacing, touchMin } from '@/constants/theme';
+import { setRememberLogin } from '@/lib/auth';
 import { isSupabaseConfigured, supabase } from '@/lib/supabase';
 
 type Mode = 'signin' | 'signup';
@@ -23,6 +25,7 @@ export default function LoginScreen() {
   const [mode, setMode] = useState<Mode>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberLogin, setRememberLoginState] = useState(true);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
@@ -50,6 +53,7 @@ export default function LoginScreen() {
           password,
         });
         if (error) throw error;
+        await setRememberLogin(rememberLogin);
         // 성공하면 AuthGate 가 알아서 탭 화면으로 보낸다
       } else {
         const { data, error } = await supabase.auth.signUp({
@@ -129,6 +133,19 @@ export default function LoginScreen() {
               returnKeyType="go"
             />
 
+            {mode === 'signin' ? (
+              <Pressable
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: rememberLogin }}
+                onPress={() => setRememberLoginState((value) => !value)}
+                style={s.rememberRow}>
+                <View style={[s.checkbox, rememberLogin && s.checkboxChecked]}>
+                  {rememberLogin ? <Text style={s.checkmark}>✓</Text> : null}
+                </View>
+                <Text style={s.rememberText}>로그인 상태 유지</Text>
+              </Pressable>
+            ) : null}
+
             {notice ? <Text style={s.notice}>{notice}</Text> : null}
             {error ? <Text style={s.error}>{error}</Text> : null}
 
@@ -202,4 +219,17 @@ const s = StyleSheet.create({
   },
   notice: { color: colors.forest, fontSize: fontSize.caption, lineHeight: 20 },
   error: { color: colors.danger, fontSize: fontSize.caption, lineHeight: 20 },
+  rememberRow: { minHeight: touchMin, flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
+  checkbox: {
+    width: 22,
+    height: 22,
+    borderWidth: 1,
+    borderColor: colors.borderStrong,
+    borderRadius: radius.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  checkboxChecked: { backgroundColor: colors.forest, borderColor: colors.forest },
+  checkmark: { color: colors.white, fontSize: 16, fontWeight: '700', lineHeight: 19 },
+  rememberText: { color: colors.textMuted, fontSize: fontSize.caption + 1 },
 });
