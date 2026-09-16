@@ -42,6 +42,7 @@ desktop.ini
 .idea/
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 
 # ---- 참고 보관 자료 (프로젝트 소스 아님) ----
 # 저장된 웹페이지 안에 세션 accessToken(JWT)이 포함되어 있어 Git 추적에서 제외.
