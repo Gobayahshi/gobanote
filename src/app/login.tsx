@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -17,12 +18,20 @@ import { isSupabaseConfigured, supabase } from '@/lib/supabase';
 type Mode = 'signin' | 'signup';
 
 export default function LoginScreen() {
+  const router = useRouter();
+  const params = useLocalSearchParams<{ reset?: string }>();
   const [mode, setMode] = useState<Mode>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (params.reset === 'success') {
+      setNotice('비밀번호가 변경되었습니다. 새 비밀번호로 다시 로그인해 주세요.');
+    }
+  }, [params.reset]);
 
   async function submit() {
     setError(null);
@@ -139,6 +148,14 @@ export default function LoginScreen() {
                 setNotice(null);
               }}
             />
+
+            {mode === 'signin' ? (
+              <Button
+                label="비밀번호를 잊으셨나요?"
+                variant="secondary"
+                onPress={() => router.push('/reset-password')}
+              />
+            ) : null}
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

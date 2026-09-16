@@ -75,6 +75,19 @@ export async function createNote(input: CreateInput): Promise<Note> {
 
   const { data, error } = await supabase.from('notes').insert(row).select(COLUMNS).single();
   if (error) throw error;
+
+  try {
+    const { error: classificationError } = await supabase.functions.invoke('classify-note', {
+      body: { note_id: row.id },
+    });
+
+    if (classificationError) {
+      console.warn('[고바노트] classify-note 호출 실패:', classificationError);
+    }
+  } catch (classificationError) {
+    console.warn('[고바노트] classify-note 요청 중 예외:', classificationError);
+  }
+
   return data as Note;
 }
 

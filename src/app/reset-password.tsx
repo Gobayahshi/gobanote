@@ -72,10 +72,11 @@ export default function ResetPasswordScreen() {
       const { error } = await supabase.auth.updateUser({ password });
       if (error) throw error;
 
-      setMessage('비밀번호가 변경되었습니다. 로그인 화면으로 이동합니다.');
+      await supabase.auth.signOut();
+      setMessage('비밀번호가 변경되었습니다. 다시 로그인해 주세요.');
       setTimeout(() => {
-        router.replace('/login');
-      }, 1200);
+        router.replace('/login?reset=success');
+      }, 800);
     } catch (e) {
       setError(e instanceof Error ? e.message : '비밀번호를 변경하지 못했습니다.');
     } finally {

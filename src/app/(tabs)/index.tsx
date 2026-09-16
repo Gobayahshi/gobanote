@@ -39,11 +39,11 @@ export default function WriteScreen() {
     setSaving(true);
     setError(null);
     try {
-      const note = await createNote({ title, content, category });
+      await createNote({ title, content, category });
       setTitle('');
       setContent('');
       setCategory('daily');
-      router.push(`/note/${note.id}`);
+      router.replace('/');
     } catch (e) {
       setError(e instanceof Error ? e.message : '저장하지 못했습니다.');
     } finally {
